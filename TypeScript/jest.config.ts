@@ -1,4 +1,4 @@
-import { pathsToModuleNameMapper } from  "ts-jest";
+import { pathsToModuleNameMapper } from "ts-jest";
 import { compilerOptions } from './tsconfig.json'
 
 export default {
@@ -9,5 +9,5 @@ export default {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' } ),
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
 };
