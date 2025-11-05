@@ -1,4 +1,4 @@
-import { BASE_QUALITY_INCREMENT, LEGENDARY_ITEM_QUALITY, MAX_QUALITY, MIN_QUALITY, QUALITY_INCREMENT_FIRST_THRESHOLD, QUALITY_INCREMENT_SECOND_THRESHOLD } from "@/constants";
+import { BASE_QUALITY_INCREMENT, FIRST_THRESHOLD_DAYS, LEGENDARY_ITEM_QUALITY, MAX_QUALITY, MIN_QUALITY, QUALITY_INCREMENT_FIRST_THRESHOLD, QUALITY_INCREMENT_SECOND_THRESHOLD, SECOND_THRESHOLD_DAYS } from "@/constants";
 import { CheeseItem } from "@/core/CustomItems/CheeseItem.model";
 import { ConjuredItem } from "@/core/CustomItems/ConjuredItem.model";
 import { ForcedExpiracyItem } from "@/core/CustomItems/ForcedExpiracyItem.model";
@@ -68,13 +68,13 @@ describe('items specificity', () => {
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(21);
         });
-        it(`should increase quality by ${QUALITY_INCREMENT_FIRST_THRESHOLD} when there are 10 days or less`, () => {
-            const customItem = new ForcedExpiracyItem('Backstage passes', QUALITY_INCREMENT_FIRST_THRESHOLD + 1, 20);
+        it(`should increase quality by ${QUALITY_INCREMENT_FIRST_THRESHOLD} when there are ${FIRST_THRESHOLD_DAYS} days or less`, () => {
+            const customItem = new ForcedExpiracyItem('Backstage passes', FIRST_THRESHOLD_DAYS, 20);
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(22);
         });
-        it(`should increase quality by ${QUALITY_INCREMENT_SECOND_THRESHOLD} when there are 5 days or less`, () => {
-            const customItem = new ForcedExpiracyItem('Backstage passes', QUALITY_INCREMENT_SECOND_THRESHOLD + 1, 20);
+        it(`should increase quality by ${QUALITY_INCREMENT_SECOND_THRESHOLD} when there are ${SECOND_THRESHOLD_DAYS} days or less`, () => {
+            const customItem = new ForcedExpiracyItem('Backstage passes', SECOND_THRESHOLD_DAYS, 20);
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(23);
         });

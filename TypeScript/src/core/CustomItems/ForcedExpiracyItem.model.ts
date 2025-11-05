@@ -6,9 +6,9 @@ export class ForcedExpiracyItem extends UsableItem {
     getQualityIncrement(): number {
         // Increase quality based on sellIn thresholds
         if (this.sellIn <= SECOND_THRESHOLD_DAYS) {
-            return QUALITY_INCREMENT_FIRST_THRESHOLD;
-        } else if (this.sellIn <= FIRST_THRESHOLD_DAYS) {
             return QUALITY_INCREMENT_SECOND_THRESHOLD;
+        } else if (this.sellIn <= FIRST_THRESHOLD_DAYS) {
+            return QUALITY_INCREMENT_FIRST_THRESHOLD;
         }
         return BASE_QUALITY_INCREMENT;
     }
