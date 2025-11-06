@@ -1,17 +1,34 @@
-import { BASE_QUALITY_INCREMENT, MAX_QUALITY, MIN_QUALITY } from "@/constants";
+import { BASE_QUALITY_INCREMENT, MAX_QUALITY, MIN_QUALITY } from "@/Constants";
 import { Item } from "./Item.model";
 import { UsableItemInterface } from "./UsableItem.interface";
 
 
-export class UsableItem extends Item implements UsableItemInterface {
-    constructor(name: string, sellIn: number, quality: number) {
-        super(name, sellIn, quality);
-        // Ensure quality is within bounds 0 to 50
-        this.quality = Math.min(MAX_QUALITY, Math.max(MIN_QUALITY, quality));
+export class UsableItem implements UsableItemInterface {
+    protected item: Item
+    constructor(item: Item) {
+        this.item = item;
+        this.item.quality = Math.min(MAX_QUALITY, Math.max(MIN_QUALITY, item.quality));
+    }
+
+    get sellIn(): number {
+        return this.item.sellIn;
+    }
+
+    get quality(): number {
+        return this.item.quality;
+    }
+
+    set quality(value: number) {
+        this.item.quality = value;
+
+    }
+
+    set sellIn(value: number) {
+        this.item.sellIn = value;
     }
 
     getQualityIncrement(): number {
-        return this.sellIn <= 0 ? BASE_QUALITY_INCREMENT * 2 : BASE_QUALITY_INCREMENT;
+        return this.item.sellIn < 0 ? BASE_QUALITY_INCREMENT * 2 : BASE_QUALITY_INCREMENT;
     }
 
     dailyUpdate(): void {
@@ -20,22 +37,22 @@ export class UsableItem extends Item implements UsableItemInterface {
     }
 
     incrementQuality(): void {
-        this.quality = Math.min(MAX_QUALITY, this.quality + this.getQualityIncrement());
+        this.item.quality = Math.min(MAX_QUALITY, this.item.quality + this.getQualityIncrement());
     }
 
     decrementQuality(): void {
-        this.quality = Math.max(MIN_QUALITY, this.quality - this.getQualityIncrement());
+        this.item.quality = Math.max(MIN_QUALITY, this.item.quality - this.getQualityIncrement());
     }
 
     decrementSellIn(): void {
-        this.sellIn--;
+        this.item.sellIn--;
     }
 
     isExpired(): boolean {
-        return this.sellIn <= 0;
+        return this.item.sellIn < 0;
     }
 
     resetQuality(): void {
-        this.quality = 0;
+        this.item.quality = 0;
     }
 }   

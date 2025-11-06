@@ -1,6 +1,6 @@
 import { Item } from "./Item.model";
 
 
-export interface UsableItemInterface extends Item {
+export interface UsableItemInterface {
     dailyUpdate(): void;
 }

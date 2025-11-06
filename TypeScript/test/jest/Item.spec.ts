@@ -1,15 +1,16 @@
-import { BASE_QUALITY_INCREMENT, FIRST_THRESHOLD_DAYS, LEGENDARY_ITEM_QUALITY, MAX_QUALITY, MIN_QUALITY, QUALITY_INCREMENT_FIRST_THRESHOLD, QUALITY_INCREMENT_SECOND_THRESHOLD, SECOND_THRESHOLD_DAYS } from "@/constants";
+import { BASE_QUALITY_INCREMENT, FIRST_THRESHOLD_DAYS, LEGENDARY_ITEM_QUALITY, MAX_QUALITY, MIN_QUALITY, QUALITY_INCREMENT_FIRST_THRESHOLD, QUALITY_INCREMENT_SECOND_THRESHOLD, SECOND_THRESHOLD_DAYS } from "@/Constants";
 import { CheeseItem } from "@/core/CustomItems/CheeseItem.model";
 import { ConjuredItem } from "@/core/CustomItems/ConjuredItem.model";
 import { ForcedExpiracyItem } from "@/core/CustomItems/ForcedExpiracyItem.model";
 import { LegendaryItem } from "@/core/CustomItems/LegendaryItem.model";
+import { Item } from "@/core/Item.model";
 import { UsableItem } from "@/core/UsableItem.model";
 
 
 describe('property verification', () => {
     let item: UsableItem;
     beforeEach(() => {
-        item = new UsableItem('Test Item', 5, 5);
+        item = new UsableItem(new Item('Test Item', 5, 5));
         item.dailyUpdate();
     });
     describe('sellIn', () => {
@@ -23,7 +24,7 @@ describe('property verification', () => {
             expect(item.quality).toBe(4);
         });
         it(`should be equal or less than ${MAX_QUALITY} quality value`, () => {
-            const specificItem = new UsableItem('Specific Item', 5, 55);
+            const specificItem = new UsableItem(new Item('Specific Item', 5, 55));
             expect(specificItem.quality).toBeLessThanOrEqual(MAX_QUALITY);
         });
         it('should be positive quality', () => {
@@ -42,7 +43,7 @@ describe('items specificity', () => {
     let customItem: UsableItem;
     describe('CheeseItem', () => {
         it(`should increase quality by ${BASE_QUALITY_INCREMENT} each day`, () => {
-            const customItem = new CheeseItem('Aged Brie', 2, 2);
+            const customItem = new CheeseItem(new Item('Aged Brie', 2, 2));
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(3);
         });
@@ -50,7 +51,7 @@ describe('items specificity', () => {
 
     describe('LegendaryItem', () => {
         beforeAll(() => {
-            customItem = new LegendaryItem('Sulfuras', 5, LEGENDARY_ITEM_QUALITY);
+            customItem = new LegendaryItem(new Item('Sulfuras', 5, LEGENDARY_ITEM_QUALITY));
             customItem.dailyUpdate();
         });
         it(`should never have a fixed sellIn value equal to ${MIN_QUALITY}`, () => {
@@ -64,22 +65,22 @@ describe('items specificity', () => {
 
     describe('ForcedExpiracyItem.model', () => {
         it(`should increase quality by ${BASE_QUALITY_INCREMENT} each day`, () => {
-            customItem = new ForcedExpiracyItem('Backstage passes', 15, 20);
+            customItem = new ForcedExpiracyItem(new Item('Backstage passes', 15, 20));
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(21);
         });
-        it(`should increase quality by ${QUALITY_INCREMENT_FIRST_THRESHOLD} when there are ${FIRST_THRESHOLD_DAYS} days or less`, () => {
-            const customItem = new ForcedExpiracyItem('Backstage passes', FIRST_THRESHOLD_DAYS, 20);
+        it(`should increase quality by ${QUALITY_INCREMENT_FIRST_THRESHOLD} when there are ${FIRST_THRESHOLD_DAYS} less`, () => {
+            const customItem = new ForcedExpiracyItem(new Item('Backstage passes', FIRST_THRESHOLD_DAYS, 20));
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(22);
         });
-        it(`should increase quality by ${QUALITY_INCREMENT_SECOND_THRESHOLD} when there are ${SECOND_THRESHOLD_DAYS} days or less`, () => {
-            const customItem = new ForcedExpiracyItem('Backstage passes', SECOND_THRESHOLD_DAYS, 20);
+        it(`should increase quality by ${QUALITY_INCREMENT_SECOND_THRESHOLD} when there are less than ${SECOND_THRESHOLD_DAYS} days `, () => {
+            const customItem = new ForcedExpiracyItem(new Item('Backstage passes', SECOND_THRESHOLD_DAYS, 20));
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(23);
         });
         it(`should drop quality to ${MIN_QUALITY} after sellin reach ${MIN_QUALITY}`, () => {
-            const customItem = new ForcedExpiracyItem('Backstage passes', MIN_QUALITY, 20);
+            const customItem = new ForcedExpiracyItem(new Item('Backstage passes', MIN_QUALITY, 20));
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(MIN_QUALITY);
         });
@@ -87,10 +88,10 @@ describe('items specificity', () => {
 
     describe('Conjured items', () => {
         it('should degrade in quality twice as fast as normal items each day', () => {
-            customItem = new ConjuredItem('Conjured Item', 5, 6);
+            customItem = new ConjuredItem(new Item('Conjured Item', 5, 6));
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(4);
-            customItem = new ConjuredItem('Conjured Item', MIN_QUALITY, 6);
+            customItem = new ConjuredItem(new Item('Conjured Item', MIN_QUALITY, 6));
             customItem.dailyUpdate();
             expect(customItem.quality).toBe(2);
         });

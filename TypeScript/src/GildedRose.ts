@@ -8,7 +8,7 @@ export class GildedRose {
 
   constructor(items = [] as Array<Item>) {
     this.items = items;
-    this.customItemsMap = items.map(item => CustomInstanceMapper(item.name, item.sellIn, item.quality));
+    this.customItemsMap = this.items.map((item) => CustomInstanceMapper(item));
   }
 
   updateQuality(): void {
